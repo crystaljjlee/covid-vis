@@ -1,5 +1,4 @@
 
-
 import tweepy
 import datetime
 import csv, codecs, cStringIO
@@ -32,7 +31,8 @@ def scrape_term(term, max_tweets=10000000, start_date='2016-01-01', end_date='20
                                             since=start_date,
                                             until=end_date).items(max_tweets)):
 
-        if (c+1) %100 == 0: print "{} tweets mentioning {} scraped.".format(c+1, term)
+        if (c+1) %100 == 0:
+            print("{} tweets mentioning {} scraped.".format(c+1, term))
 
         tweets.append(tweet_to_dict(tweet))
 
@@ -64,7 +64,8 @@ def scrape_term_by_day(term, start_date='2016-09-06', end_date='2016-09-17', twe
                                       start_date=date_string_start,
                                       end_date=date_string_end)
 
-        print "Scraped {} tweets mentioning {} from {}".format(len(tweets_of_date), term, date_string_start)
+        print("Scraped {} tweets mentioning {} from {}".format(len(tweets_of_date), term,
+                                                               date_string_start))
         tweets = tweets + tweets_of_date
         dt_start += datetime.timedelta(days=1)
 
@@ -81,7 +82,7 @@ def store_tweets_to_csv(tweets, filename='scraped_tweets.csv'):
     :return Nothing, but creates a csv of a list of tweets
     '''
 
-    print "Storing {} tweets in {}".format(len(tweets), filename)
+    print("Storing {} tweets in {}".format(len(tweets), filename))
 
     with open(filename, 'wb') as csvfile:
         csvwriter = UnicodeWriter(csvfile)
@@ -91,8 +92,8 @@ def store_tweets_to_csv(tweets, filename='scraped_tweets.csv'):
             try:
                 csvwriter.writerow([tweet['tweet_id'], tweet['date'], tweet['author_id'], tweet['author_name'],
                                 tweet['author_screen_name'], tweet['is_retweet'], tweet['retweets_number'], tweet['text']])
-            except AttributeError, e:
-                print "err", e, tweet
+            except AttributeError as e:
+                print("err", e, tweet)
 
 
 def set_up_twitter_api():
